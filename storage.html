@@ -1,0 +1,29 @@
+<!doctype html>
+
+<title>Storage</title>
+
+<script>
+	var uid = new Date;
+	var result;
+	try{
+		localStorage.setItem(uid,uid);
+		result = localStorage.getItem(uid) == uid;
+		localStorage.removeItem(uid);
+	}catch(err){
+		alert("local storage is disabled in your browser!!");
+	}
+	if(result){
+		console.log("Everything is cool for this browser");
+	}
+	else alert("time to say goodbye");
+
+	// localStorage.setItem('name','sahil');
+	// localStorage.score = 50;
+	// localStorage['level'] = 3;
+
+	// sessionStorage.setItem('name','sahil');
+	// sessionStorage.score = 50;
+	// sessionStorage['level'] = 3;
+
+
+</script>

@@ -1,0 +1,22 @@
+<!doctype html>
+
+<title>Canvas</title>
+
+<style>
+	canvas{
+		background:orange;
+	}
+
+</style>
+<canvas width="300" height="200" id="cv"></canvas>
+
+<script>
+	var canvas = document.getElementById('cv');
+	var ctx = canvas.getContext('2d');
+
+	ctx.beginPath();
+	ctx.fillStyle = "red";
+	ctx.arc(50,50,30,0,2*Math.PI);
+	ctx.fill();
+	ctx.closePath();
+</script>

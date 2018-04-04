@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<title>DOM | AJAX</title>
+
+<p id="loadContentArea"></p>
+<button id="btn" onclick="loadContent()")>Click me!</button>
+<script>
+
+	function loadContent () {
+
+		var xhttp = new XMLHttpRequest();
+		var loadContentArea = document.getElementById('loadContentArea');
+
+		xhttp.onreadystatechange = function(){
+			if (this.readyState == 4 && this.status == 200){
+				loadContentArea.innerHTML = this.responseText;
+			}
+		};
+		xhttp.open("GET","hello.txt",true);
+		xhttp.send();
+	}
+
+</script>

@@ -1,0 +1,147 @@
+<!doctype html>
+<title>Brick Breaking Game</title>
+
+<style>
+	canvas{
+		background: lightblue;
+	}
+</style>
+
+<div id='d1' style="position:absolute; top:20px; left:80px;">
+	<canvas id="canvas" width="1200" height="500"></canvas>
+</div>
+<script>
+	var ball, paddle, brick, cw, ch, totalBricks;
+
+	var canvas = document.getElementById('canvas');
+
+	var ctx = canvas.getContext('2d');
+
+	cw = canvas.width;
+	ch = canvas.height;
+
+	ball = {
+		x:450,
+		y:480,
+		r:20,
+		vx:1,
+		vy:-1
+	}
+
+	brick = {
+		w:100,
+		x:10,
+		y:10,
+		h:10,
+		gapTop:50,
+		gapBtwn:50,
+		gapLR:50,
+		row:2,
+		col:4
+	};
+
+	paddle = {
+		w:100,
+		h:10,
+		x:10,
+		y:10
+	};
+
+//<!-- Setting up brick width -->
+	brick.w = (cw - (2*brick.gapLR) - ((brick.col -1)*brick.gapBtwn))/brick.col;
+	paddle.w = (cw - (2*brick.gapLR) - ((brick.col -1)*brick.gapBtwn))/brick.col;
+
+//<!-- Setting up paddle coordinates -->
+	paddle.x = cw/2 - paddle.w/2;
+	paddle.y = ch - paddle.h;
+
+//<!-- Setting up ball coordinates -->
+	ball.x = cw/2;
+	ball.y = ch - ball.r - paddle.h;
+
+	totalBricks = brick.col*brick.row;
+
+	function drawball() {
+		ctx.beginPath();
+		ctx.fillStyle = 'orange';
+		ctx.arc(ball.x,ball.y,ball.r,0,2*Math.PI);
+		ctx.fill();
+		ctx.closePath();
+	}
+
+	function drawPaddle() {
+		ctx.beginPath();
+		ctx.fillStyle = 'black';
+		ctx.rect(paddle.x,paddle.y,paddle.w,paddle.h);
+		ctx.fill();
+		ctx.closePath();
+	}
+
+	function drawBrick(brick) {
+		ctx.beginPath();
+		ctx.fillStyle = 'green';
+		ctx.rect(brick.x,brick.y,brick.w,brick.h);
+		ctx.fill();
+		ctx.closePath();
+	}
+
+	function drawBricks() {
+		var bricks = [];
+		for (var r = 0 ; r < brick.row; r++){
+			bricks[r] = [];
+			for(var c = 0; c < brick.col ; c++){
+				bricks[r][c] = {x:10,y:10,w:brick.w,h:brick.h};
+			}
+		}
+		var ycoordinate = brick.gapTop;
+		var xcoordinate = brick.gapLR;
+
+		for (var r = 0 ; r < brick.row; r++){
+			for(var c = 0; c < brick.col ; c++){
+				bricks[r][c] = {x:xcoordinate, y:ycoordinate, w:brick.w, h:brick.h };
+				console.log(bricks[r][c].w);
+				drawBrick(bricks[r][c]);
+				xcoordinate += brick.w + brick.gapBtwn;
+			}
+			ycoordinate += brick.h + brick.gapTop;
+			xcoordinate = brick.gapLR;
+		}
+
+	}
+
+	function collisionDetection() {
+		if (ball.x > cw -ball.r || ball.x < ball.r){
+			ball.vx = -ball.vx;
+		}
+		if ( ball.y < ball.r){
+			ball.vy = -ball.vy;
+		}
+		if (ball.y > ch - ball.r){
+			alert("You are out!");
+			return 1;
+		}
+
+
+		ball.x += ball.vx;
+		ball.y += ball.vy;
+	}
+	document.addEventListener('keydown',function(e){
+		if(e.keyCode == 37){
+			paddle.x -= 10;
+		}
+		else if (e.keyCode == 39){
+			paddle.x += 10;
+		}
+	})
+	function initGame() {
+		ctx.clearRect(0,0,cw,ch);
+
+		drawball();
+		drawPaddle();
+		drawBricks();
+		if(collisionDetection())return;
+
+	}
+	setInterval(initGame,1);
+	// initGame();
+</script>

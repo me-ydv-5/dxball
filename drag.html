@@ -1,0 +1,53 @@
+<!doctype html>
+
+<title>Drag and drop</title>
+
+<style>
+	.source{
+		background: red;
+		height: 200px;
+	}
+	.destination{
+		background: green;
+		height: 200px;
+	}
+</style>
+
+<div class="source">
+	<img src="hello.png" alt="bus" width="150px" height="140px" id="image">
+</div>
+
+<div class="destination" id="dropZone"></div>
+
+<script>
+	var img = document.getElementById('image');
+	var dropzone = document.getElementById('dropZone');
+
+	img.addEventListener('dragstart', function (e) {
+		e.dataTransfer.setData("text",e.target.src);
+		e.dataTransfer.setData("height",e.target.height);
+		e.dataTransfer.setData("width",e.target.width);
+		console.log(e.target);
+	});
+	dropzone.addEventListener('dragenter', function (e) {
+		dropzone.style.background = "black";
+	});
+
+	dropzone.addEventListener('dragover',function(e) {
+		e.preventDefault();
+	});
+	dropzone.addEventListener('dragleave', function (e) {
+		dropzone.style.background = "green";
+	});
+	dropzone.addEventListener('drop', function (e) {
+		event.preventDefault();
+		dropzone.style.background = "gray";
+
+		var newImage = document.createElement("img");
+		newImage.src = e.dataTransfer.getData("text");
+		newImage.height = e.dataTransfer.getData("height");
+		newImage.width = e.dataTransfer.getData("width");
+		e.target.appendChild(newImage);
+	});
+
+</script>
